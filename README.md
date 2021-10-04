@@ -6,22 +6,23 @@ iOS logging framework inspired by [Timber](https://github.com/JakeWharton/timber
 
 1. Install the library into your project.
     * Swift Package Manager:  `.package(url: "https://github.com/ameriod/ForestKit.git", from: "1.0.0")`
-    * Carthage: Comming Soon
-    * Cocoapods: Comming Soon
+    * Carthage: Coming Soon
+    * Cocoapods: Coming Soon
 
-2. Install any tree instances in the ApplicationDeligate.
-    * [OSLogDebugTree](Targets/ForestKit/Sources/OSLogDebugTree.swift)
-    * [PrintDebugTree](Targets/ForestKit/Sources/PrintDebugTree.swift)
+2. Install any tree instances in the ApplicationDelegate.
+    * [ForestKit.OSLogTree](Targets/ForestKit/Sources/OSLogTree.swift)
+    * [ForestKit.PrintTree](Targets/ForestKit/Sources/PrintTree.swift)
+    * [ForestKit.FileOutputTree](Targets/ForestKit/Sources/FileOutputTree.swift)
     * Any class that extends from `Tree` 
     
-3. Type type alias `ForestKit.instance` and add a pubic variable of `Forest`  so you do not need to import `ForestKit` or call `Forest.instance` everywhere in the app.
+3. Create typealias `ForestKit.instance` and add a pubic variable of `Forest`  so you do not need to import `ForestKit` or call `Forest.instance` everywhere in the app.
 
 ```Swift
 public typealias ForestKitLogging = ForestKit
 public let Forest = ForestKitLogging.instance
 ```
 
-4. Call `Forest` with any of of the logging options.
+4. Call `Forest` with any of the logging options.
     * Calling the functions with the message made from a closure, the string interpolation is only ran if there are trees planted.
 
 To disable logging just do not plant any trees. To remove a tree at run time call `Forest.uproot(tree)` or to remove all trees `Forest.uprootAll()`
@@ -44,8 +45,6 @@ If there are any new files added when you pull down from git you will need to re
 
 ## TODOs
 
-* Add a `Tree` and logs to a file, `FileOutputTree`.
-* Add a UI component under `ForestUI` for a debug menu that reads the `FileOutputTree` and displays the contents to the user with searching and filtering.
 * Update the sample app to show the debug menu and all logging options used.
 * Add Carthage support.
 * Add Cocopods support.

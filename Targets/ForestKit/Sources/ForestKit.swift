@@ -102,7 +102,7 @@ extension ForestKit {
         guard !trees.isEmpty else {
             return
         }
-        log(message())
+        log(error, with: message())
     }
 
     /// Log a verbose exception.
@@ -130,6 +130,7 @@ extension ForestKit {
         tag = nil
     }
 
+    /// Log a debug exception and a message.
     public func d(_ error: Error?, with message: () -> String?) {
         guard !trees.isEmpty else {
             return
@@ -248,7 +249,7 @@ extension ForestKit {
         guard !trees.isEmpty else {
             return
         }
-        wtf(message())
+        f(message())
     }
 
     /// Log a fault exception and a message.
@@ -260,7 +261,7 @@ extension ForestKit {
         guard !trees.isEmpty else {
             return
         }
-        wtf(error, with: message())
+        f(error, with: message())
     }
 
     /// Log a fault exception.
