@@ -9,7 +9,7 @@ extension ForestKit {
         /// The file URL the logs will be written to
         public let fileURL: URL
         /// The start of a log in the file
-        public static let logStartPrefix: String = "[!@$#%]"
+        public static let logPostFix: String = "$$$$\n"
 
         public init(fileName: String = "ForestKitApplication.log", clearOnStart: Bool = true) {
             documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
@@ -24,13 +24,13 @@ extension ForestKit {
             let log: String
             let date = Date()
             if let tag = tag {
-                log = "\(FileOutputTree.logStartPrefix)\(date) - \(priority) - \(tag) - \(message)\(error.forestMessage)"
+                log = "\(date) - \(priority) - \(tag) - \(message)\(error.forestMessage)"
             } else {
-                log = "\(FileOutputTree.logStartPrefix)\(date) - \(priority) - \(message)\(error.forestMessage)"
+                log = "\(date) - \(priority) - \(message)\(error.forestMessage)"
             }
 
             do {
-                try log.appendLine(to: fileURL)
+                try "\(log)\(Self.logPostFix)".append(to: fileURL)
             } catch {
                 print("\(ForestKit.Priority.error) - Writing FileOutputTree to \(fileURL) failed")
             }
@@ -47,10 +47,6 @@ extension ForestKit {
 }
 
 extension String {
-
-    func appendLine(to url: URL) throws {
-        try appending("\n").append(to: url)
-    }
 
     func append(to url: URL) throws {
         let data = self.data(using: String.Encoding.utf8)

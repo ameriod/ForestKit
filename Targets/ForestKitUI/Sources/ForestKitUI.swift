@@ -11,6 +11,9 @@ public struct ForestKitUI: View {
         List(viewModel.logs) { data in
             Text(data.log)
         }
+        .onAppear {
+            viewModel.load()
+        }
     }
 
 }
@@ -24,18 +27,24 @@ private struct LogData: Identifiable {
 
 private class ViewModel: ObservableObject {
 
-    @Published var logs: [LogData]
-    private let logsFromDisk: [LogData]
+    private let tree: ForestKit.FileOutputTree
+    @Published var logs = [LogData]()
+    private var logsFromDisk = [LogData]()
 
     init() {
-        guard let tree = ForestKit.instance.forest().first(where: { $0 is ForestKit.FileOutputTree }) as? ForestKit.FileOutputTree else {
+        if let tree = ForestKit.instance.forest().first(where: { $0 is ForestKit.FileOutputTree }) as? ForestKit.FileOutputTree {
+            self.tree = tree
+        } else {
             fatalError("Error no \(ForestKit.FileOutputTree.self) is planted")
         }
+    }
+
+    func load() {
         do {
             // TODO this is not breaking apart the logs
             let log = try String(contentsOf: tree.fileURL, encoding: .utf8)
-            print(log)
-            logsFromDisk = log.components(separatedBy: ForestKit.FileOutputTree.logStartPrefix)
+            print("WTF:\n\(log)")
+            logsFromDisk = log.components(separatedBy: ForestKit.FileOutputTree.logPostFix)
                 .filter { !$0.isEmpty }
                 .map { LogData(log: $0) }
             logs = logsFromDisk
