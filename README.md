@@ -10,8 +10,9 @@ iOS logging framework inspired by [Timber](https://github.com/JakeWharton/timber
     * Cocoapods: Coming Soon
 
 2. Install any tree instances in the ApplicationDelegate.
-    * [OSLogDebugTree](Targets/ForestKit/Sources/OSLogDebugTree.swift)
-    * [PrintDebugTree](Targets/ForestKit/Sources/PrintDebugTree.swift)
+    * [ForestKit.OSLogTree](Targets/ForestKit/Sources/OSLogTree.swift)
+    * [ForestKit.PrintTree](Targets/ForestKit/Sources/PrintTree.swift)
+    * [ForestKit.FileOutputTree](Targets/ForestKit/Sources/FileOutputTree.swift)
     * Any class that extends from `Tree` 
     
 3. Create typealias `ForestKit.instance` and add a pubic variable of `Forest`  so you do not need to import `ForestKit` or call `Forest.instance` everywhere in the app.
@@ -44,9 +45,7 @@ If there are any new files added when you pull down from git you will need to re
 
 ## TODOs
 
-* Add a `Tree` and logs to a file, `FileOutputTree`.
-* Add a UI component under `ForestUI` for a debug menu that reads the `FileOutputTree` and displays the contents to the user with searching and filtering.
-* Update the sample app to show the debug menu and all logging options used.
+* Update the `FileOutputTreeView` to search, filter, sort by date and clear logs.
 * Add Carthage support.
 * Add Cocopods support.
 * Add CI/CD to build the project.

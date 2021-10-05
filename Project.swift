@@ -22,5 +22,5 @@ import ProjectDescriptionHelpers
 // Creates our project using a helper function defined in ProjectDescriptionHelpers
 let project = Project.app(name: "Forest",
                           platform: .iOS,
-                          additionalTargets: ["ForestKit", "ForestUI"],
+                          additionalTargets: ["ForestKit"],
                           additionalFiles: ["README.md", "LICENSE", "Package.swift"])
