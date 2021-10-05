@@ -2,9 +2,9 @@ import Foundation
 
 extension Optional where Wrapped: Error {
 
-    var forestMessage: String {
+    func forestMessage(separator: String = "\n") -> String {
         if let error = self {
-            return "\nError: \(error)"
+            return "\(separator)Error: \(error)"
         }
         return ""
     }

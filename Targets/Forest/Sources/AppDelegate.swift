@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ForestKit.FileOutputTree()
         )
 
-        Forest.d { "Forest is planted with this number of trees: \(Forest.treeCount)" }
+        Forest.d("Forest is planted with this number of trees: \(Forest.treeCount)")
 
         return true
     }

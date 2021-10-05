@@ -22,9 +22,9 @@ extension ForestKit {
 
         public func log(priority: ForestKit.Priority, tag: String?, message: String, error: Error?) {
             if let tag = tag {
-                os_log("%s - %s", log: log, type: priority.osLog, tag, "\(message)\(error.forestMessage)")
+                os_log("%s - %s", log: log, type: priority.osLog, tag, "\(message)\(error.forestMessage())")
             } else {
-                os_log("%s", log: log, type: priority.osLog, "\(message)\(error.forestMessage)")
+                os_log("%s", log: log, type: priority.osLog, "\(message)\(error.forestMessage())")
             }
         }
 
@@ -43,7 +43,7 @@ private extension ForestKit.Priority {
             return .debug
         case .error:
             return .error
-        case .fault:
+        case .fault, .wtf:
             return .fault
         }
     }

@@ -8,10 +8,15 @@ extension ForestKit {
         public init() { }
 
         public func log(priority: ForestKit.Priority, tag: String?, message: String, error: Error?) {
+            print(logString(priority: priority, tag: tag, message: message, error: error))
+        }
+
+        func logString(priority: ForestKit.Priority, tag: String?, message: String, error: Error?) -> String {
+            let date = Date()
             if let tag = tag {
-                print("\(priority) - \(tag) - \(message)\(error.forestMessage)")
+                return "\(date) - \(priority) - \(tag) - \(message)\(error.forestMessage())"
             } else {
-                print("\(priority) - \(message)\(error.forestMessage)")
+                return "\(date) - \(priority) - \(message)\(error.forestMessage())"
             }
         }
     }

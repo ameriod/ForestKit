@@ -1,4 +1,3 @@
-import ForestKitUI
 import SwiftUI
 
 @main
@@ -25,22 +24,22 @@ struct ContentView: View {
                 TextField("Log Message", text: $message)
                 TextField("Error message, empty for no error", text: $errorMessage)
                 Button("Log \(ForestKitLogging.Priority.default.rawValue)") {
-                    Forest.log(error) { message }
+                    Forest.log(error, message)
                 }
                 Button("Log \(ForestKitLogging.Priority.info.rawValue)") {
-                    Forest.i(error) { message }
+                    Forest.i(error, message)
                 }
                 Button("Log \(ForestKitLogging.Priority.debug.rawValue)") {
-                    Forest.d(error) { message }
+                    Forest.d(error,  message)
                 }
                 Button("Log \(ForestKitLogging.Priority.error.rawValue)") {
-                    Forest.e(error) { message }
+                    Forest.e(error,  message)
                 }
                 Button("Log \(ForestKitLogging.Priority.fault.rawValue)") {
-                    Forest.f(error) { message }
+                    Forest.f(error,  message)
                 }
                 Button("Log wtf") {
-                    Forest.wtf(error) { message }
+                    Forest.wtf(error, message)
                 }
             }
             Spacer()
@@ -61,8 +60,8 @@ struct ContentView: View {
     }
 
     func fileTreeOutputView() -> some View {
-        ForestKitUI()
-            .navigationBarTitle(Text("FileOutputTree UI"), displayMode: .inline)
+        ForestKitLogging.FileOutputTreeView()
+            .navigationBarTitle(Text("FileOutputTree"), displayMode: .inline)
     }
 }
 

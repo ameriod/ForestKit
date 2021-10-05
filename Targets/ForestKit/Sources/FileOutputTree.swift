@@ -8,31 +8,33 @@ extension ForestKit {
         private let documentsURL: URL
         /// The file URL the logs will be written to
         public let fileURL: URL
-        /// The start of a log in the file
-        public static let logPostFix: String = "$$$$\n"
+        private let encoder: JSONEncoder
 
         public init(fileName: String = "ForestKitApplication.log", clearOnStart: Bool = true) {
             documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
             documentsURL = URL(fileURLWithPath: documents)
             fileURL = documentsURL.appendingPathComponent(fileName)
+            encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
             if clearOnStart {
                 clearAll()
             }
         }
 
         public func log(priority: ForestKit.Priority, tag: String?, message: String, error: Error?) {
-            let log: String
-            let date = Date()
-            if let tag = tag {
-                log = "\(date) - \(priority) - \(tag) - \(message)\(error.forestMessage)"
+            let errorStr: String?
+            if let error = error {
+                errorStr = String(describing: error)
             } else {
-                log = "\(date) - \(priority) - \(message)\(error.forestMessage)"
+                errorStr = nil
             }
-
+            let log = FileLogData(date: Date(), priority: priority, tag: tag, message: message, error: errorStr)
             do {
-                try "\(log)\(Self.logPostFix)".append(to: fileURL)
+                let data = try encoder.encode(log)
+                let json = String(decoding: data, as: UTF8.self)
+                try "\(json)\n".append(to: fileURL)
             } catch {
-                print("\(ForestKit.Priority.error) - Writing FileOutputTree to \(fileURL) failed")
+                print("\(ForestKit.Priority.error) - Adding Log: \(log) to File: \(fileURL) to FileOutputTree")
             }
         }
 
@@ -43,6 +45,26 @@ extension ForestKit {
                 print("\(ForestKit.Priority.error) - Clearing FileOutputTree \(fileURL) failed")
             }
         }
+    }
+}
+
+struct FileLogData: Codable, Identifiable {
+    var date: Date
+    var priority: ForestKit.Priority
+    var tag: String?
+    var message: String
+    var error: String?
+
+    var id: String {
+        "\(date.description) - \(message)"
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case date
+        case priority
+        case tag
+        case message
+        case error
     }
 }
 
