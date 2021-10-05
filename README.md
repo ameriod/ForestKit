@@ -45,7 +45,7 @@ If there are any new files added when you pull down from git you will need to re
 
 ## TODOs
 
-* Update the sample app to show the debug menu and all logging options used.
+* Update the `FileOutputTreeView` to search, filter, sort by date and clear logs.
 * Add Carthage support.
 * Add Cocopods support.
 * Add CI/CD to build the project.
