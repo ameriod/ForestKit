@@ -14,9 +14,9 @@ extension ForestKit {
         func logString(priority: ForestKit.Priority, tag: String?, message: String, error: Error?) -> String {
             let date = Date()
             if let tag = tag {
-                return "\(date) - \(priority) - \(tag) - \(message)\(error.forestMessage())"
+                return "\(date) - \(priority) - \(tag) - \(message)\(error.forestMessage)"
             } else {
-                return "\(date) - \(priority) - \(message)\(error.forestMessage())"
+                return "\(date) - \(priority) - \(message)\(error.forestMessage)"
             }
         }
     }
