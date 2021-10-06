@@ -51,24 +51,13 @@ public final class ForestKit {
 
 extension ForestKit {
 
-    public enum Priority: String, CustomStringConvertible, Codable {
-        case `default`
-        case info
-        case debug
-        case error
-        case fault
-        case wtf
-
-        public var description: String {
-            switch self {
-            case .default: return "[Default]"
-            case .info: return "[Info]"
-            case .debug: return "[Debug]"
-            case .error: return "[Error]"
-            case .fault: return "[Fault]"
-            case .wtf: return "[WTF]"
-            }
-        }
+    public enum Priority: String, Codable, CaseIterable {
+        case `default` = "[Default]"
+        case info = "[Info]"
+        case debug = "[Debug]"
+        case error = "[Error]"
+        case fault = "[Fault]"
+        case wtf = "[WTF]"
     }
 
 }
