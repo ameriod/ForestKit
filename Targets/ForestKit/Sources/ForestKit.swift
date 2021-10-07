@@ -8,17 +8,14 @@ public final class ForestKit {
 
     var trees = [Tree]()
 
-    /// Add a new logging tree.
-    public func plant(_ tree: Tree) {
-        if trees.contains(where: { $0 === tree }) {
-            fatalError("You have already planted this tree. \(tree)")
-        }
-        trees.append(tree)
-    }
-
     /// Adds new logging trees.
-    public func plant(_ trees: Tree...) {
-        trees.forEach { plant($0) }
+    public func plant(_ saplings: Tree...) {
+        saplings.forEach { sapling in
+            if trees.contains(where: { $0 === sapling }) {
+                fatalError("You have already planted this tree. \(sapling)")
+            }
+            trees.append(sapling)
+        }
     }
 
     /// Remove a planted tree.
