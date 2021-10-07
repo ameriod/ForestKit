@@ -22,20 +22,32 @@ extension ForestKit {
         }
 
         public func log(priority: ForestKit.Priority, tag: String?, message: String, error: Error?) {
-            let errorStr: String?
-            if let error = error {
-                errorStr = String(describing: error)
+
+            func writeLog() {
+                let errorStr: String?
+                if let error = error {
+                    errorStr = String(describing: error)
+                } else {
+                    errorStr = nil
+                }
+                let log = LogData(date: Date(), priority: priority, tag: tag, message: message, error: errorStr)
+                do {
+                    let data = try encoder.encode(log)
+                    let json = String(decoding: data, as: UTF8.self)
+                    try "\(json)\n".append(to: fileURL)
+                } catch {
+                    print("\(ForestKit.Priority.error) - Adding Log: \(log) to File: \(fileURL) to FileOutputTree")
+                }
+            }
+
+            if Thread.isMainThread {
+                DispatchQueue.main.async {
+                    writeLog()
+                }
             } else {
-                errorStr = nil
+                writeLog()
             }
-            let log = FileLogData(date: Date(), priority: priority, tag: tag, message: message, error: errorStr)
-            do {
-                let data = try encoder.encode(log)
-                let json = String(decoding: data, as: UTF8.self)
-                try "\(json)\n".append(to: fileURL)
-            } catch {
-                print("\(ForestKit.Priority.error) - Adding Log: \(log) to File: \(fileURL) to FileOutputTree")
-            }
+
         }
 
         func clearAll() {
@@ -48,23 +60,29 @@ extension ForestKit {
     }
 }
 
-struct FileLogData: Codable, Identifiable {
-    var date: Date
-    var priority: ForestKit.Priority
-    var tag: String?
-    var message: String
-    var error: String?
+private typealias LogData = ForestKit.FileOutputTree.LogData
 
-    var id: String {
-        "\(date.description) - \(message)"
-    }
+public extension ForestKit.FileOutputTree {
 
-    enum CodingKeys: String, CodingKey {
-        case date
-        case priority
-        case tag
-        case message
-        case error
+    /// The `Codable` that converts the logs from `ForestKit.FileOutputTree` to json to store in the file.
+    struct LogData: Codable, Identifiable {
+        public var date: Date
+        public var priority: ForestKit.Priority
+        public var tag: String?
+        public var message: String
+        public var error: String?
+
+        public var id: String {
+            "\(date.description) - \(message)"
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case date
+            case priority
+            case tag
+            case message
+            case error
+        }
     }
 }
 

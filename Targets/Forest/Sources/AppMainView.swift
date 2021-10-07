@@ -1,5 +1,5 @@
-import SwiftUI
 import ForestKitView
+import SwiftUI
 
 @main
 struct AppMainView: App {
@@ -61,7 +61,7 @@ struct ContentView: View {
     }
 
     func fileTreeOutputView() -> some View {
-        ForestKitLogging.FileOutputTreeView()
+        ForestKitView.LogViewer()
             .navigationBarTitle(Text("FileOutputTree"), displayMode: .inline)
     }
 }
