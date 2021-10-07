@@ -11,6 +11,10 @@ let package = Package(
             name: "ForestKit",
             targets: ["ForestKit"]
         ),
+        .library(
+            name: "ForestKitView",
+            targets: ["ForestKitView"]
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -23,6 +27,11 @@ let package = Package(
             name: "ForestKit",
             dependencies: [],
             path: "Targets/ForestKit/Sources"
+        ),
+        .testTarget(
+            name: "ForestKitView",
+            dependencies: ["ForestKit"],
+            path: "Targets/ForestKitView/Sources"
         ),
     ]
 )

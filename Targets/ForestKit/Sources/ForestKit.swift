@@ -10,8 +10,8 @@ public final class ForestKit {
 
     /// Add a new logging tree.
     public func plant(_ tree: Tree) {
-        if tree === self {
-            fatalError("You cannot plant the Forest as a tree...")
+        if trees.contains(where: { $0 === tree }) {
+            fatalError("You have already planted this tree. \(tree)")
         }
         trees.append(tree)
     }

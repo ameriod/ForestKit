@@ -45,7 +45,8 @@ If there are any new files added when you pull down from git you will need to re
 
 ## TODOs
 
-* Update the `FileOutputTreeView` to search, filter, sort by date and clear logs.
+* Add a `URLProtocol` to log network requests.
+* Include the `URLProtocol` logs in the UI
 * Add Carthage support.
 * Add Cocopods support.
 * Add CI/CD to build the project.

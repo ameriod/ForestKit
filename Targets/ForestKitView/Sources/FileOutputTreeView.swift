@@ -1,4 +1,5 @@
 import Combine
+import ForestKit
 import SwiftUI
 
 public extension ForestKit {
@@ -72,12 +73,24 @@ private struct LogFilterView: View {
                 }
             }
             Section(header: Text("Errors")) {
+                ForEach(ErrorFilter.allCases, id: \.self) { filter in
+                    Text(filter.rawValue)
+                        .foregroundColor(selectedColor(viewModel.isSelected(for: filter)))
+                        .onTapGesture {
+                            viewModel.errorFilterSelected(with: filter)
+                        }
+                }
             }
             Section(header: Text("Date")) {
-
+                ForEach(SortOrder.allCases, id: \.self) { sort in
+                    Text(sort.rawValue)
+                        .foregroundColor(selectedColor(viewModel.isSelected(for: sort)))
+                        .onTapGesture {
+                            viewModel.selectedSort(with: sort)
+                        }
+                }
             }
         }
-        .textCase(nil)
         Button("Close") {
             showFilters = false
         }
@@ -89,6 +102,16 @@ private struct LogFilterView: View {
         }
         return nil
     }
+}
+
+private enum ErrorFilter: String, CaseIterable {
+    case yes = "Errors"
+    case no = "No Errors"
+}
+
+private enum SortOrder: String, CaseIterable {
+    case decending = "Decending Date"
+    case acending = "Accending Date"
 }
 
 extension ForestKit.Priority {
@@ -106,12 +129,14 @@ extension ForestKit.Priority {
 private class ViewModel: ObservableObject {
 
     private let tree: ForestKit.FileOutputTree
-    @Published var logs = [FileLogData]()
-    private var logsFromDisk = [FileLogData]()
     private let jsonDecoder: JSONDecoder
-    @Published var search = ""
-    @Published var selectedPriorities: Set<ForestKit.Priority> = []
+    private var logsFromDisk = [FileLogData]()
 
+    @Published var logs = [FileLogData]()
+    @Published var search = ""
+    @Published var selectedPriorities = Set(ForestKit.Priority.allCases)
+    @Published var selectedError: ErrorFilter?
+    @Published var selectedSort: SortOrder = .decending
     private var disposables = Set<AnyCancellable>()
 
     init() {
@@ -125,9 +150,12 @@ private class ViewModel: ObservableObject {
         jsonDecoder = JSONDecoder()
         jsonDecoder.dateDecodingStrategy = .iso8601
 
-        Publishers.CombineLatest($search, $selectedPriorities)
-            .map { query, priorities in
-                self.logsFromDisk.search(with: query).filter(with: priorities)
+        Publishers.CombineLatest4($search, $selectedPriorities, $selectedError, $selectedSort)
+            .map { [unowned self] query, priorities, error, sort in
+                self.logsFromDisk.search(with: query)
+                    .filter(with: priorities)
+                    .filter(with: error)
+                    .sorted(by: sort)
             }
             .sink { searchedLogs in
                 self.logs = searchedLogs
@@ -145,6 +173,26 @@ private class ViewModel: ObservableObject {
         } else {
             selectedPriorities.insert(priority)
         }
+    }
+
+    func isSelected(for error: ErrorFilter) -> Bool {
+        error == selectedError
+    }
+
+    func errorFilterSelected(with error: ErrorFilter) {
+        if error == selectedError {
+            selectedError = nil
+        } else {
+            selectedError = error
+        }
+    }
+
+    func isSelected(for sort: SortOrder) -> Bool {
+        sort == selectedSort
+    }
+
+    func selectedSort(with sort: SortOrder) {
+        selectedSort = sort
     }
 
     func load() {
@@ -171,17 +219,6 @@ private class ViewModel: ObservableObject {
     }
 }
 
-private enum ErrorFilter: String, CaseIterable {
-    case errors = "Errors"
-    case no_errors = "No Errors"
-    case all = "All"
-}
-
-private enum SortOrder: String, CaseIterable {
-    case decending = "Decending Date"
-    case acending = "Accending Date"
-}
-
 private extension Array where Element == FileLogData {
     func search(with query: String) -> [FileLogData] {
         if query.isEmpty {
@@ -196,11 +233,30 @@ private extension Array where Element == FileLogData {
     }
 
     func filter(with priorities: Set<ForestKit.Priority>) -> [FileLogData] {
-        if priorities.isEmpty {
-            return self
-        }
-        return filter {
+        filter {
             priorities.contains($0.priority)
+        }
+    }
+
+    func filter(with error: ErrorFilter?) -> [FileLogData] {
+        filter {
+            switch error {
+            case .no:
+                return $0.error == nil
+            case .yes:
+                return $0.error != nil
+            default:
+                return true
+            }
+        }
+    }
+
+    func sorted(by sort: SortOrder) -> [FileLogData] {
+        switch sort {
+        case .acending:
+            return sorted(by: { $0.date.compare($1.date) == .orderedAscending })
+        case .decending:
+            return sorted(by: { $0.date.compare($1.date) == .orderedDescending })
         }
     }
 }
