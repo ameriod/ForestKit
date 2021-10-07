@@ -2,14 +2,14 @@
 
 iOS logging framework inspired by [Timber](https://github.com/JakeWharton/timber) and [square/logcat](https://github.com/square/logcat).
 
-## Useage
+## Useage ForestKit
 
 1. Install the library into your project.
     * Swift Package Manager:  `.package(url: "https://github.com/ameriod/ForestKit.git", from: "1.0.0")`
     * Carthage: Coming Soon
     * Cocoapods: Coming Soon
 
-2. Install any tree instances in the ApplicationDelegate.
+2. Install any tree instances in the ApplicationDelegate by calling `Forest.plant(tree)`
     * [ForestKit.OSLogTree](Targets/ForestKit/Sources/OSLogTree.swift)
     * [ForestKit.PrintTree](Targets/ForestKit/Sources/PrintTree.swift)
     * [ForestKit.FileOutputTree](Targets/ForestKit/Sources/FileOutputTree.swift)
@@ -23,11 +23,15 @@ public let Forest = ForestKitLogging.instance
 ```
 
 4. Call `Forest` with any of the logging options.
-    * Calling the functions with the message made from a closure, the string interpolation is only ran if there are trees planted.
+    * If logging is turned off then the message string will not be interpolated.
 
 To disable logging just do not plant any trees. To remove a tree at run time call `Forest.uproot(tree)` or to remove all trees `Forest.uprootAll()`
 
 See the [sample app](Targets/Forest/Sources) for more usage.
+
+## Usage ForestKitView
+
+The `ForestKitView.LogViewer` provides a SwiftUI view to view the logs producted by the [ForestKit.FileOutputTree](Targets/ForestKit/Sources/FileOutputTree.swift). Simplly add it the your debug menu of the app, and then you can search, filter, sort and copy the log messages.
 
 ## Project setup
 
@@ -45,7 +49,10 @@ If there are any new files added when you pull down from git you will need to re
 
 ## TODOs
 
-* Update the `FileOutputTreeView` to search, filter, sort by date and clear logs.
+* Add a `URLProtocol` to log network requests.
+* Include the `URLProtocol` logs in the `ForestKitView.LogViewer`
+* Add code style format
+* Add swiftlint
 * Add Carthage support.
 * Add Cocopods support.
 * Add CI/CD to build the project.

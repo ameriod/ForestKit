@@ -8,17 +8,14 @@ public final class ForestKit {
 
     var trees = [Tree]()
 
-    /// Add a new logging tree.
-    public func plant(_ tree: Tree) {
-        if tree === self {
-            fatalError("You cannot plant the Forest as a tree...")
-        }
-        trees.append(tree)
-    }
-
     /// Adds new logging trees.
-    public func plant(_ trees: Tree...) {
-        trees.forEach { plant($0) }
+    public func plant(_ saplings: Tree...) {
+        saplings.forEach { sapling in
+            if trees.contains(where: { $0 === sapling }) {
+                fatalError("You have already planted this tree. \(sapling)")
+            }
+            trees.append(sapling)
+        }
     }
 
     /// Remove a planted tree.
@@ -51,24 +48,13 @@ public final class ForestKit {
 
 extension ForestKit {
 
-    public enum Priority: String, CustomStringConvertible, Codable {
-        case `default`
-        case info
-        case debug
-        case error
-        case fault
-        case wtf
-
-        public var description: String {
-            switch self {
-            case .default: return "[Default]"
-            case .info: return "[Info]"
-            case .debug: return "[Debug]"
-            case .error: return "[Error]"
-            case .fault: return "[Fault]"
-            case .wtf: return "[WTF]"
-            }
-        }
+    public enum Priority: String, Codable, CaseIterable {
+        case `default` = "[Default]"
+        case info = "[Info]"
+        case debug = "[Debug]"
+        case error = "[Error]"
+        case fault = "[Fault]"
+        case wtf = "[WTF]"
     }
 
 }

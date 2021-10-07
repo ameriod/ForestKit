@@ -1,3 +1,4 @@
+import ForestKitView
 import SwiftUI
 
 @main
@@ -30,15 +31,15 @@ struct ContentView: View {
                     Forest.i(error, message)
                 }
                 Button("Log \(ForestKitLogging.Priority.debug.rawValue)") {
-                    Forest.d(error,  message)
+                    Forest.d(error, message)
                 }
                 Button("Log \(ForestKitLogging.Priority.error.rawValue)") {
-                    Forest.e(error,  message)
+                    Forest.e(error, message)
                 }
                 Button("Log \(ForestKitLogging.Priority.fault.rawValue)") {
-                    Forest.f(error,  message)
+                    Forest.f(error, message)
                 }
-                Button("Log wtf") {
+                Button("Log \(ForestKitLogging.Priority.wtf.rawValue)") {
                     Forest.wtf(error, message)
                 }
             }
@@ -60,7 +61,7 @@ struct ContentView: View {
     }
 
     func fileTreeOutputView() -> some View {
-        ForestKitLogging.FileOutputTreeView()
+        ForestKitView.LogViewer()
             .navigationBarTitle(Text("FileOutputTree"), displayMode: .inline)
     }
 }
