@@ -31,7 +31,7 @@ See the [sample app](Targets/Forest/Sources) for more usage.
 
 ## Usage ForestKitView
 
-The `ForestKitView.LogViewer` provides a SwiftUI view to view the logs producted by the [ForestKit.FileOutputTree](Targets/ForestKit/Sources/FileOutputTree.swift). Simplly add it the your debug menu of the app. Then you can search, filter, sort and copy the log messages.
+The `ForestKitView.LogViewer` provides a SwiftUI view to view the logs producted by the [ForestKit.FileOutputTree](Targets/ForestKit/Sources/FileOutputTree.swift). Simplly add it the your debug menu of the app, and then you can search, filter, sort and copy the log messages.
 
 ## Project setup
 
