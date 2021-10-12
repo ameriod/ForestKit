@@ -101,7 +101,7 @@ private extension Array where Element == LogData {
         } else {
             return filter { log in
                 log.message.localizedCaseInsensitiveContains(query) ||
-                    log.error?.localizedCaseInsensitiveContains(query) == true ||
+                    log.error?.localizedCaseInsensitiveContains(query) ?? false ||
                     log.priority.rawValue.localizedCaseInsensitiveContains(query)
             }
         }

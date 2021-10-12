@@ -47,6 +47,7 @@ identifier_name:
     - y
     - en
     - es
+    - no
 
 # Custom rules
 custom_rules:
