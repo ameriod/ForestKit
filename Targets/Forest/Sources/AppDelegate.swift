@@ -2,6 +2,7 @@ import ForestKit
 import UIKit
 
 public typealias ForestKitLogging = ForestKit
+// swiftlint:disable identifier_name
 public let Forest = ForestKit.instance
 
 class AppDelegate: UIResponder, UIApplicationDelegate {

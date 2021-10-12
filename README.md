@@ -51,8 +51,6 @@ If there are any new files added when you pull down from git you will need to re
 
 * Add a `URLProtocol` to log network requests.
 * Include the `URLProtocol` logs in the `ForestKitView.LogViewer`
-* Add code style format
-* Add swiftlint
 * Add Carthage support.
 * Add Cocopods support.
 * Add CI/CD to build the project.
