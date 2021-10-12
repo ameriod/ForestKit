@@ -86,4 +86,40 @@ extension Project {
         )
         return [mainTarget, testTarget]
     }
+
+    static var swfitlint: TargetScript {
+        .pre(
+            script: "swiftLint",
+            name:
+            """
+            if which swiftlint >/dev/null; then
+              swiftlint
+            else
+              echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+            fi
+            """
+        )
+    }
+
+    static var swiftformat: TargetScript {
+        .pre(
+            script: "swiftformat",
+            name:
+            """
+            if which swiftformat >/dev/null; then
+            ls -a
+            swiftformat .
+            else
+            echo "warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat"
+            fi
+            """
+        )
+    }
+
+    static var targetScript: [TargetScript] {
+        [
+            swfitlint,
+            swiftformat
+        ]
+    }
 }
